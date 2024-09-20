@@ -109,19 +109,12 @@ endfunction()
 
 if (EAR_SIMD)
     # add_arch_lib must be called from best to worst instruction set
-    if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64|X86|i686")
-        if (MSVC)
-            add_arch_lib(ear avx512bw "/arch:AVX512")
-            add_arch_lib(ear avx2_fma "/arch:AVX2")
-            add_arch_lib(ear avx "/arch:AVX")
-        else()
-            add_arch_lib(ear avx512bw "-mavx512bw;-mavx512dq;-mavx512cd;-mavx512f;-mfma;-mavx2;-mavx")
-            add_arch_lib(ear avx2_fma "-mfma;-mavx2;-mavx")
-            add_arch_lib(ear avx "-mavx")
-            add_arch_lib(ear sse4_2 "-msse4.2")
-        endif()
+    if (MSVC)
+        add_arch_lib(ear avx512bw "/arch:AVX512")
+        add_arch_lib(ear avx2_fma "/arch:AVX2")
+        add_arch_lib(ear avx "/arch:AVX")
         add_arch_lib(ear default_arch "")
-    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "ARM.*|arm.*|aarch64.*")
+    else()
         # for arm, flags are not generally needed as the FP extension support is
         # closely tied to the ISA, so just build the default and fallback
         #
